@@ -1,0 +1,12 @@
+Concept
+	SpaceHunting is a game in which the player drives a spaceship and tries to run away to deep space while other spaceships (enemies) attack him
+Rules
+	Win -> Survive enough time to "jump" to speed light
+	Fail -> Be destroyed by the enemies
+	How play -> The player drives the spaceship, with six free grades of rotation and acceleration, and shoot the enemies
+Requirements
+	- 3D Models of spaceships
+	- Particles FX and sound FX for explosion, shoots, etc. 
+	- Background music
+	- Enemies AI
+	- Play with Xbox360 pad
