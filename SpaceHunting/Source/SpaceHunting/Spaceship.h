@@ -50,6 +50,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	float AccelerationForward;
 
+	/** SpawnComponent */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
+	class USpawnComponent* SpawnComponent;
+
 	float CurrentSpeedForward;
 	float ForwardAxis;
 #pragma endregion
@@ -66,5 +70,8 @@ protected:
 
 	/** Called for event to backward */
 	void MoveBackward();
+
+	/** Called for shoot Axis*/
+	void Shoot(float ShootAxis);
 #pragma endregion
 };

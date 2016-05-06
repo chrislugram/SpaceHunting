@@ -2,6 +2,7 @@
 
 #include "SpaceHunting.h"
 #include "Spaceship.h"
+#include "SpawnComponent.h"
 
 #define OUT
 
@@ -29,6 +30,9 @@ ASpaceship::ASpaceship()
 	// Create spaceship movement
 	FloatingMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("FloatingMovement"));
 	FloatingMovement->UpdatedComponent = RootComponent;
+
+	// Create spawn component for the weapon
+	SpawnComponent = CreateDefaultSubobject<USpawnComponent>(TEXT("SpawnComponent"));
 
 	// Posses default Player 0
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -62,7 +66,7 @@ void ASpaceship::Tick( float DeltaTime )
 	else if (CurrentSpeedForward == 0)
 		CurrentSpeedForward = 0;
 
-	UE_LOG(LogTemp, Warning, TEXT("SPEED: %f"), CurrentSpeedForward);
+	//UE_LOG(LogTemp, Warning, TEXT("SPEED: %f"), CurrentSpeedForward);
 
 	// ApplySpeed
 	FloatingMovement->AddInputVector(GetActorForwardVector() * CurrentSpeedForward);
@@ -77,6 +81,7 @@ void ASpaceship::SetupPlayerInputComponent(class UInputComponent* InputComponent
 
 	InputComponent->BindAxis("XAxis", this, &ASpaceship::RotateXAxis);
 	InputComponent->BindAxis("YAxis", this, &ASpaceship::RotateYAxis);
+	InputComponent->BindAxis("Shoot", this, &ASpaceship::Shoot);
 	
 	InputComponent->BindAction("ForwardEvent", EInputEvent::IE_Pressed, this, &ASpaceship::MoveForward);
 	InputComponent->BindAction("BackwardEvent", EInputEvent::IE_Pressed, this, &ASpaceship::MoveBackward);
@@ -114,6 +119,14 @@ void ASpaceship::MoveBackward()
 		ForwardAxis = 0;
 	else
 		ForwardAxis = -1;
+}
+
+void ASpaceship::Shoot(float ShootAxis)
+{
+	if (ShootAxis > 0) 
+	{
+		SpawnComponent->SpawnActor();
+	}
 }
 #pragma endregion
 
