@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "SpawnElement.h"
 #include "SpawnComponent.generated.h"
 
 
@@ -32,6 +33,9 @@ public:
 	/** Activate the spawn*/
 	void FinishReloadTime();
 
+	/** Stored the spawn elements disabled */
+	void AddDisabledSpawnElement(class USpawnElement* SpawnElement);
+
 protected:
 	/** SpringArm used for the CameraComponent */
 	UPROPERTY(EditAnywhere, Category = "SpawnComponent", meta = (AllowPrivateAccess = "true"))
@@ -39,7 +43,7 @@ protected:
 
 	/** The object to spawn */
 	UPROPERTY(EditAnywhere, Category = "SpawnComponent")
-	TSubclassOf<class AActor> SpawnElement;
+	TSubclassOf<class AActor> SpawnBP;
 
 	/** Time waiting to reload the spawn component*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnComponent")
@@ -50,4 +54,7 @@ protected:
 
 	/** Timer to control the reload time*/
 	FTimerHandle SpawnTimer;
+
+	/** Array with spawnElements disabled */
+	TArray<class USpawnElement*> DisabledSpawnElements;
 };
