@@ -24,8 +24,14 @@ void USpawnComponent::BeginPlay()
 	SpawnPoint = Cast<USceneComponent>(object);
 	if (SpawnPoint == nullptr)
 	{
+		
 		UE_LOG(LogTemp, Warning, TEXT("PointSpawn NOT FOUND"));
 	}
+	else
+	{
+		SpawnPoint->bAbsoluteRotation = true;
+	}
+
 
 	ReloadSpawn = true;
 	GetOwner()->GetWorldTimerManager().SetTimer(SpawnTimer, this, &USpawnComponent::FinishReloadTime, ReloadTime, true);
@@ -41,7 +47,6 @@ void USpawnComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 
 void USpawnComponent::FinishReloadTime()
 {
-	UE_LOG(LogTemp, Warning, TEXT("VUELVO A PODER DISPARAR"));
 	ReloadSpawn = true;
 	GetOwner()->GetWorldTimerManager().UnPauseTimer(SpawnTimer);
 }
@@ -65,8 +70,7 @@ void USpawnComponent::SpawnActor()
 			// Get location to spawn at
 			FVector SpawnLocation = GetSpawnPoint();
 			// spawn object
-			AActor * const ActorSpawned = OurWorld->SpawnActor<AActor>(SpawnElement, SpawnLocation, FRotator(0, 0, 0), SpawnParams);
-			UE_LOG(LogTemp, Warning, TEXT("Create spawn element %s"), *(ActorSpawned->GetName()));
+			AActor *  ActorSpawned = OurWorld->SpawnActor<AActor>(SpawnElement, SpawnLocation, GetOwner()->GetActorRotation(), SpawnParams);
 			// if yes, reactivate the first object
 				// spawn object
 
