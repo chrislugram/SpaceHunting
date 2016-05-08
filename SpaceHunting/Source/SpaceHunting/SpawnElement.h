@@ -23,13 +23,16 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	/** Initialize the spawn element */
-	void InitElement(class USpawnComponent* Spawner);
+	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
+	virtual void InitElement(class USpawnComponent* Spawner);
 
 	/** Disable actor*/
-	void DisableElement();
+	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
+	virtual void DisableElement();
 
 	/** Enable actor */
-	void EnableElement();
+	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
+	virtual void EnableElement();
 
 protected:
 	/** Time to disable the spawn element */

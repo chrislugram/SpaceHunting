@@ -13,7 +13,8 @@ ASpaceship::ASpaceship()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Create empty root component
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SpaceshipRoot"));
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("SpaceshipBoxComponent"));
+	RootComponent = BoxComponent;
 
 	// Create spring arm
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
@@ -46,7 +47,6 @@ void ASpaceship::BeginPlay()
 	Super::BeginPlay();	
 
 	// Setup movement
-	ForwardAxis = 0;
 	CurrentSpeedForward = 0;
 }
 
@@ -55,9 +55,6 @@ void ASpaceship::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
 
-	// Update speed
-	CurrentSpeedForward += ForwardAxis * DeltaTime * AccelerationForward;
-
 	// Clamp speed
 	if ((CurrentSpeedForward > 0) && (CurrentSpeedForward > MaxSpeedForward))
 		CurrentSpeedForward = MaxSpeedForward;
@@ -65,8 +62,6 @@ void ASpaceship::Tick( float DeltaTime )
 		CurrentSpeedForward = -MaxSpeedForward;
 	else if (CurrentSpeedForward == 0)
 		CurrentSpeedForward = 0;
-
-	//UE_LOG(LogTemp, Warning, TEXT("SPEED: %f"), CurrentSpeedForward);
 
 	// ApplySpeed
 	FloatingMovement->AddInputVector(GetActorForwardVector() * CurrentSpeedForward);
@@ -82,9 +77,7 @@ void ASpaceship::SetupPlayerInputComponent(class UInputComponent* InputComponent
 	InputComponent->BindAxis("XAxis", this, &ASpaceship::RotateXAxis);
 	InputComponent->BindAxis("YAxis", this, &ASpaceship::RotateYAxis);
 	InputComponent->BindAxis("Shoot", this, &ASpaceship::Shoot);
-	
-	InputComponent->BindAction("ForwardEvent", EInputEvent::IE_Pressed, this, &ASpaceship::MoveForward);
-	InputComponent->BindAction("BackwardEvent", EInputEvent::IE_Pressed, this, &ASpaceship::MoveBackward);
+	InputComponent->BindAxis("Acceleration", this, &ASpaceship::AccelerationAxis);
 }
 
 void ASpaceship::RotateXAxis(float RotationValue)
@@ -105,20 +98,9 @@ void ASpaceship::RotateYAxis(float RotationValue)
 	SetActorRotation(NewQuatRotation.Rotator());
 }
 
-void ASpaceship::MoveForward()
+void ASpaceship::AccelerationAxis(float AccelerationValue)
 {
-	if (ForwardAxis < 0)
-		ForwardAxis = 0;
-	else
-		ForwardAxis = 1;
-}
-
-void ASpaceship::MoveBackward()
-{
-	if (ForwardAxis > 0)
-		ForwardAxis = 0;
-	else
-		ForwardAxis = -1;
+	CurrentSpeedForward += AccelerationValue * GetWorld()->GetDeltaSeconds() * AccelerationForward;
 }
 
 void ASpaceship::Shoot(float ShootAxis)

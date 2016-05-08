@@ -54,8 +54,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	class USpawnComponent* SpawnComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* BoxComponent;
+
 	float CurrentSpeedForward;
-	float ForwardAxis;
 #pragma endregion
 
 #pragma region INPUT_METHODS
@@ -65,11 +67,8 @@ protected:
 	/** Called for rotation in Y axis */
 	void RotateYAxis(float RotationValue);
 
-	/** Called for event to forward */
-	void MoveForward();
-
-	/** Called for event to backward */
-	void MoveBackward();
+	/** Called for acceleration change*/
+	void AccelerationAxis(float AccelerationValue);
 
 	/** Called for shoot Axis*/
 	void Shoot(float ShootAxis);

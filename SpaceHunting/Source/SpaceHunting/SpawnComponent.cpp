@@ -65,6 +65,10 @@ void USpawnComponent::SpawnActor()
 	// If yet reload and we have set something to spawn
 	if (ReloadSpawn && (SpawnBP != nullptr))
 	{
+		// Activate reload time
+		ReloadSpawn = false;
+		GetOwner()->GetWorldTimerManager().UnPauseTimer(SpawnTimer);
+
 		// Check for valid world
 		UWorld* const OurWorld = GetWorld();
 		if (OurWorld != nullptr)
@@ -93,14 +97,10 @@ void USpawnComponent::SpawnActor()
 
 				// Recalculate position and direction
 				ActorSpawned->SetActorLocation(SpawnLocation);
-				FVector PreviousVelocity = ActorSpawned->FindComponentByClass<UProjectileMovementComponent>()->Velocity;
-				ActorSpawned->FindComponentByClass<UProjectileMovementComponent>()->Velocity = (GetOwner()->GetActorForwardVector() * PreviousVelocity.Size());
-				ActorSpawned->FindComponentByClass<UProjectileMovementComponent>()->UpdateComponentVelocity();
+				ActorSpawned->SetActorRotation(GetOwner()->GetActorRotation());
 			}
 
-			// Activate reload time
-			ReloadSpawn = false;
-			GetOwner()->GetWorldTimerManager().UnPauseTimer(SpawnTimer);
+			// Initialized spawn element
 			USpawnElement* SpawnElement = ActorSpawned->FindComponentByClass<USpawnElement>();
 			if (SpawnElement != nullptr)
 			{

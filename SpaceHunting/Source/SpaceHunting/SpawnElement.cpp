@@ -21,11 +21,7 @@ USpawnElement::USpawnElement()
 void USpawnElement::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
-
 
 // Called every frame
 void USpawnElement::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
@@ -39,10 +35,13 @@ void USpawnElement::TickComponent( float DeltaTime, ELevelTick TickType, FActorC
 #pragma region SPAWN_ELEMENT
 void USpawnElement::InitElement(USpawnComponent* Spawner)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("INIT SPAWN ELEMENT"));
 	SpawnerOwner = Spawner;
 	EnableElement();
-	GetOwner()->GetWorldTimerManager().SetTimer(EnableTimer, this, &USpawnElement::DisableElement, DisableTime, false);
+	
+	if (DisableTime > 0) 
+	{
+		GetOwner()->GetWorldTimerManager().SetTimer(EnableTimer, this, &USpawnElement::DisableElement, DisableTime, false);
+	}
 }
 
 void USpawnElement::DisableElement()
