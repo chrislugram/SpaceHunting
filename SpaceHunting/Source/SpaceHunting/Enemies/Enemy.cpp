@@ -26,8 +26,6 @@ void AEnemy::BeginPlay()
 		return;
 	}
 	LifeComponent->DiedDelegate.AddDynamic(this, &AEnemy::Died);
-	//LifeComponent->DiedDelegate.Add()
-	//LifeComponent->DiedDelegate.BindRaw(this, &AEnemy::Died);
 }
 
 // Called every frame
