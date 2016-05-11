@@ -11,7 +11,6 @@ class SPACEHUNTING_API ASpaceship : public APawn
 	GENERATED_BODY()
 
 public:
-#pragma region FIELDS
 	/** SpringArm used for the CameraComponent */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraSpringArm;
@@ -22,14 +21,10 @@ public:
 
 	/** Spaceship movement */
 	class UFloatingPawnMovement* FloatingMovement;
-#pragma endregion
 
-#pragma region CONSTRUCTORS
 	// Sets default values for this pawn's properties
 	ASpaceship();
-#pragma endregion
 
-#pragma region METHODS
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -38,9 +33,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-#pragma endregion
+
 protected:
-#pragma region FIELDS
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	float SpeedRotation;
 
@@ -58,9 +52,9 @@ protected:
 	class UBoxComponent* BoxComponent;
 
 	float CurrentSpeedForward;
-#pragma endregion
 
-#pragma region INPUT_METHODS
+
+///	INPUT_METHODS
 	/** Called for rotation in X axis */
 	void RotateXAxis(float RotationValue);
 
@@ -72,5 +66,4 @@ protected:
 
 	/** Called for shoot Axis*/
 	void Shoot(float ShootAxis);
-#pragma endregion
 };
