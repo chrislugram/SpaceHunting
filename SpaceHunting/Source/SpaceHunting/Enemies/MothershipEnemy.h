@@ -51,6 +51,6 @@ protected:
 	/** Timer to control the rotation time*/
 	FTimerHandle RotationTimer;
 
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MothershipEnemy")
-	//FVector CurrentRotation;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MothershipEnemy")
+	FRotator CurrentRotation;
 };
