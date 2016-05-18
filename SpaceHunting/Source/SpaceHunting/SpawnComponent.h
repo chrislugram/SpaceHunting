@@ -24,11 +24,16 @@ public:
 
 	/** Called to spawn object in world */
 	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
-	void SpawnActor();
+	AActor* SpawnActor();
 
 	/** Return the point where spawn a object*/
 	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
 	FVector GetSpawnPoint();
+
+	/** Return the FRotator of the spawn point a object*/
+	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
+	FRotator GetSpawnRotator();
+
 
 	/** Activate the spawn*/
 	void FinishReloadTime();
@@ -54,6 +59,9 @@ protected:
 
 	/** Flag to wait to next spawn*/
 	bool ReloadSpawn;
+
+	UPROPERTY(EditAnywhere, Category = "SpawnComponent")
+	bool UseDefaultSpawnOrientation;
 
 	/** Timer to control the reload time*/
 	FTimerHandle SpawnTimer;

@@ -60,8 +60,10 @@ void USpawnComponent::AddDisabledSpawnElement(USpawnElement * SpawnElement)
 }
 
 // Called to spawn object in world
-void USpawnComponent::SpawnActor()
+AActor* USpawnComponent::SpawnActor()
 {
+	AActor* ActorSpawned = nullptr;
+
 	// If yet reload and we have set something to spawn
 	if (ReloadSpawn && (SpawnBP != nullptr))
 	{
@@ -73,8 +75,6 @@ void USpawnComponent::SpawnActor()
 		UWorld* const OurWorld = GetWorld();
 		if (OurWorld != nullptr)
 		{
-			AActor* ActorSpawned = nullptr;
-
 			// Get location to spawn at
 			FVector SpawnLocation = GetSpawnPoint();
 
@@ -86,8 +86,13 @@ void USpawnComponent::SpawnActor()
 				SpawnParams.Owner = this->GetOwner();
 				SpawnParams.Instigator = this->GetOwner()->Instigator;
 
+				// Calculate FRotator
+				FRotator ActorSpawnedRotator = GetOwner()->GetActorRotation();
+				if (!UseDefaultSpawnOrientation)
+					ActorSpawnedRotator = GetSpawnRotator();
+
 				// Create a spawn element
-				ActorSpawned = OurWorld->SpawnActor<AActor>(SpawnBP, SpawnLocation, GetOwner()->GetActorRotation(), SpawnParams);
+				ActorSpawned = OurWorld->SpawnActor<AActor>(SpawnBP, SpawnLocation, ActorSpawnedRotator, SpawnParams);
 			}
 			else
 			{
@@ -97,7 +102,12 @@ void USpawnComponent::SpawnActor()
 
 				// Recalculate position and direction
 				ActorSpawned->SetActorLocation(SpawnLocation);
-				ActorSpawned->SetActorRotation(GetOwner()->GetActorRotation());
+
+				// Recalculate FRotator
+				if (UseDefaultSpawnOrientation)
+					ActorSpawned->SetActorRotation(GetOwner()->GetActorRotation());
+				else
+					ActorSpawned->SetActorRotation(GetSpawnRotator());
 			}
 
 			// Initialized spawn element
@@ -106,14 +116,25 @@ void USpawnComponent::SpawnActor()
 			{
 				SpawnElement->InitElement(this);
 			}
+
+			//GEngine->DeferredCommands.Add(TEXT("pause"));
 		}
 	}
+
+	return ActorSpawned;
 }
 
 // Return the point where spawn a object
 FVector USpawnComponent::GetSpawnPoint() 
 {
 	return SpawnPoint->GetComponentLocation();
+}
+
+// Return the FRotator of the spawn point
+FRotator USpawnComponent::GetSpawnRotator()
+{
+	FRotator RealRotator = GetOwner()->GetActorRotation() + SpawnPoint->GetComponentRotation();
+	return RealRotator;
 }
 #pragma endregion
 

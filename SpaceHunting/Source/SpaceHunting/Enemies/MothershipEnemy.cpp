@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "Droid.h"
 #include "MothershipEnemy.h"
 
 #pragma region ENGINE
@@ -8,9 +9,6 @@ AMothershipEnemy::AMothershipEnemy()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	// Create spawn component for the Droid generation
-	//SpawnComponent = CreateDefaultSubobject<USpawnComponent>(TEXT("SpawnComponent"));
 }
 
 void AMothershipEnemy::BeginPlay()
@@ -18,10 +16,15 @@ void AMothershipEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	// Access to all SpawnComponents
-	GetComponents(SpawnComponentArray);
+	SpawnComponent = FindComponentByClass<USpawnComponent>();
+	if (SpawnComponent == nullptr)
+		UE_LOG(LogTemp, Error, TEXT("MothershipEnemy: SpawnComponent not found"));
 
 	// Setup the rotation timer
 	GetWorldTimerManager().SetTimer(RotationTimer, this, &AMothershipEnemy::UpdateRotation, TimeToChangeRotation, true);
+
+	// Setup the droid generation timer
+	GetWorldTimerManager().SetTimer(DroidGenerationTimer, this, &AMothershipEnemy::CheckDroidGeneration, TimeToCreateDroid, true);
 
 	// Setup initial rotation
 	CurrentRotation = GetActorRotation();
@@ -36,10 +39,7 @@ void AMothershipEnemy::Tick(float DeltaSeconds)
 
 	// Change rotation if it is necessary
 	FRotator ActorRotator = GetActorRotation();
-	//UE_LOG(LogTemp, Warning, TEXT("Prev Rotation: %f, %f, %f"), ActorRotator.Pitch, ActorRotator.Yaw, ActorRotator.Yaw);
-	//UE_LOG(LogTemp, Warning, TEXT("Prev Current: %f, %f, %f"), CurrentRotation.Pitch, CurrentRotation.Yaw, CurrentRotation.Roll);
 	ActorRotator = FMath::RInterpTo(ActorRotator, ActorRotator + CurrentRotation, DeltaSeconds, RotationSpeed*DeltaSeconds);
-	//UE_LOG(LogTemp, Warning, TEXT("Post Rotation: %f, %f, %f"), ActorRotator.Pitch, ActorRotator.Yaw, ActorRotator.Yaw);
 	SetActorRotation(ActorRotator);
 
 	// Movement
@@ -62,6 +62,21 @@ void AMothershipEnemy::UpdateRotation()
 	CurrentRotation.Roll = 0;
 	CurrentRotation.Pitch = FMath::RandRange(-90, 90);
 	CurrentRotation.Yaw = FMath::RandRange(-90, 90);
-	UE_LOG(LogTemp, Warning, TEXT("UPDATE ROTATION: %f, %f, %f"), CurrentRotation.Roll, CurrentRotation.Pitch, CurrentRotation.Yaw);
+	//UE_LOG(LogTemp, Warning, TEXT("UPDATE ROTATION: %f, %f, %f"), CurrentRotation.Roll, CurrentRotation.Pitch, CurrentRotation.Yaw);
+}
+
+void AMothershipEnemy::CheckDroidGeneration()
+{
+	if (CurrentDroids < MaxDroids) 
+	{
+		// Generate new droid
+		//UE_LOG(LogTemp, Warning, TEXT("GENERO DROIDE"));
+		AActor* ActorSpawned = SpawnComponent->SpawnActor();
+		ADroid* DroidSpawned = Cast<ADroid>(ActorSpawned);
+		DroidSpawned->SetMothershipActor(this);
+
+		// Increase current droids
+		CurrentDroids++;
+	}
 }
 #pragma endregion
