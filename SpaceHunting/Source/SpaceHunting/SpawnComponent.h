@@ -37,9 +37,12 @@ public:
 	void AddDisabledSpawnElement(class USpawnElement* SpawnElement);
 
 protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnComponent")
+	FName SpawnPointName;
+
 	/** SpringArm used for the CameraComponent */
-	UPROPERTY(EditAnywhere, Category = "SpawnComponent", meta = (AllowPrivateAccess = "true"))
-	class USceneComponent* SpawnPoint;
+	UPROPERTY(VisibleAnywhere, Category = "SpawnComponent")
+	USceneComponent* SpawnPoint;
 
 	/** The object to spawn */
 	UPROPERTY(EditAnywhere, Category = "SpawnComponent")

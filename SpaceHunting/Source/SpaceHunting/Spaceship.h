@@ -45,7 +45,7 @@ protected:
 	float AccelerationForward;
 
 	/** SpawnComponent */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship")
 	class USpawnComponent* SpawnComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))

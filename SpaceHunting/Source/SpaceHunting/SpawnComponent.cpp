@@ -21,7 +21,7 @@ void USpawnComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// Setup the spawn components
-	UObject * object = GetOwner()->GetDefaultSubobjectByName(TEXT("SpawnPoint"));
+	UObject * object = GetOwner()->GetDefaultSubobjectByName(SpawnPointName);
 	SpawnPoint = Cast<USceneComponent>(object);
 	if (SpawnPoint == nullptr)
 	{

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Enemies/Enemy.h"
+#include "SpawnComponent.h"
 #include "MothershipEnemy.generated.h"
 
 /**
@@ -14,6 +15,9 @@ class SPACEHUNTING_API AMothershipEnemy : public AEnemy
 	GENERATED_BODY()
 	
 public:
+	// Sets default values for this actor
+	AMothershipEnemy();
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -51,6 +55,10 @@ protected:
 	/** Timer to control the rotation time*/
 	FTimerHandle RotationTimer;
 
+	/** Current rotation of the mothership */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MothershipEnemy")
 	FRotator CurrentRotation;
+
+	/** Array of SpawnComponents */
+	TArray<USpawnComponent*> SpawnComponentArray;
 };

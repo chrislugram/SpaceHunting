@@ -4,9 +4,21 @@
 #include "MothershipEnemy.h"
 
 #pragma region ENGINE
+AMothershipEnemy::AMothershipEnemy()
+{
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
+	// Create spawn component for the Droid generation
+	//SpawnComponent = CreateDefaultSubobject<USpawnComponent>(TEXT("SpawnComponent"));
+}
+
 void AMothershipEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	// Access to all SpawnComponents
+	GetComponents(SpawnComponentArray);
 
 	// Setup the rotation timer
 	GetWorldTimerManager().SetTimer(RotationTimer, this, &AMothershipEnemy::UpdateRotation, TimeToChangeRotation, true);
