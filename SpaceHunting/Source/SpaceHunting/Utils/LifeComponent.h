@@ -5,7 +5,8 @@
 #include "Components/ActorComponent.h"
 #include "LifeComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLifeDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLifeChangeDelegate, float, Life);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FLifeEndDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SPACEHUNTING_API ULifeComponent : public UActorComponent
@@ -26,9 +27,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	void ApplyDamage(float Damage);
 
+	/** Delegate, executed when CurrentLife changes*/
+	UPROPERTY(BlueprintAssignable)
+	FLifeChangeDelegate LifeChangeDelegate;
+
 	/** Delegate, executed when CurrentLife < 0*/
 	UPROPERTY(BlueprintAssignable)
-	FLifeDelegate DiedDelegate;
+	FLifeEndDelegate DiedDelegate;
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Life")
 	float InitLife;

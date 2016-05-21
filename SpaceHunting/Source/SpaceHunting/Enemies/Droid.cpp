@@ -23,6 +23,7 @@ void ADroid::BeginPlay()
 	}
 	else
 	{
+		// Setup the sphere of detection
 		TArray<UActorComponent*> Components = GetComponents();
 		bool FoundSphereDetector = false;
 		for (size_t i = 0; i < Components.Num() && !FoundSphereDetector; i++)
@@ -33,6 +34,10 @@ void ADroid::BeginPlay()
 				DroidDetector->SetSphereComponent(Cast<USphereComponent>(Components[i]));
 			}
 		}
+
+		// Adding binding actions
+		UE_LOG(LogTemp, Error, TEXT("añado delegados"));
+		DroidDetector->ActorDetected.AddDynamic(this, &ADroid::OnActorDetected);
 	}
 }
 
@@ -74,9 +79,9 @@ void ADroid::SetMothershipActor(AActor* Mothership)
 	MothershipActor = Mothership;
 }
 
-void ADroid::OnSeePawn(APawn* OtherPawn)
+void ADroid::OnActorDetected(AActor* ActorDetected)
 {
-	UE_LOG(LogTemp, Warning, TEXT("See %s"), *(OtherPawn->GetName()));
+	UE_LOG(LogTemp, Warning, TEXT("Detected %s"), *(ActorDetected->GetName()));
 }
 #pragma endregion
 

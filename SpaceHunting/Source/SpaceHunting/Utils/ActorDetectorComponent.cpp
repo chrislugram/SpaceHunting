@@ -19,6 +19,9 @@ UActorDetectorComponent::UActorDetectorComponent()
 void UActorDetectorComponent::BeginPlay()
 {
 	Super::BeginPlay();	
+
+	// Setup the rotation timer
+	GetOwner()->GetWorldTimerManager().SetTimer(DetectorTimer, this, &UActorDetectorComponent::RunDetection, TimeBetweenDetections, true);
 }
 
 // Called every frame
@@ -35,5 +38,37 @@ void UActorDetectorComponent::SetSphereComponent(USphereComponent* SphereCompone
 {
 	SphereDetector = SphereComponent;
 	SphereDetector->SetSphereRadius(MaxDistanceDetection);
+}
+
+void UActorDetectorComponent::RunDetection()
+{
+	TArray<AActor*> OverlappingActors;
+	GetOwner()->GetOverlappingActors(OverlappingActors);
+
+	if (OverlappingActors.Num() > 0)
+	{
+		for (size_t i = 0; i < OverlappingActors.Num(); i++)
+		{
+			if (OverlappingActors[i]->ActorHasTag(TagToDetect))
+			{
+				// Get directions
+				FVector OwnerDirection = GetOwner()->GetActorForwardVector();
+				FVector ActorDirection = OverlappingActors[i]->GetActorLocation() - GetOwner()->GetActorLocation();
+
+				// Normalize vectors
+				OwnerDirection.Normalize();
+				ActorDirection.Normalize();
+
+				// Calculate angle
+				float AngleFromForward = FMath::RadiansToDegrees(acosf(FVector::DotProduct(OwnerDirection, ActorDirection)));
+				if (AngleFromForward < MaxAngleDetection)
+				{
+					//UE_LOG(LogTemp, Warning, TEXT("Lanzo Broadcast"));
+					ActorDetected.Broadcast(OverlappingActors[i]);
+				}
+				//UE_LOG(LogTemp, Warning, TEXT("Tiene tag Name: %s y angulo %f, max %f"), *(OverlappingActors[i]->GetName()), AngleFromForward, MaxAngleDetection);
+			}
+		}
+	}
 }
 #pragma endregion

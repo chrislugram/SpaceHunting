@@ -26,8 +26,9 @@ public:
 	/** Setting the actor of the mothership */
 	void SetMothershipActor(AActor* Mothership);
 
-	/** Action when droid see other actor*/
-	void OnSeePawn(APawn* OtherPawn);
+	/** Action when droid detect other actor*/
+	UFUNCTION(BlueprintCallable, Category = "Droid")
+	void OnActorDetected(AActor* ActorDetected);
 
 protected:
 	/** Damage to player when have a collision */

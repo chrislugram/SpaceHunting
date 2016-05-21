@@ -12,4 +12,5 @@ public:
 	static const FName TAG_ENEMY;
 	static const FName TAG_SPACESHIP;
 	static const FName TAG_SPACESHIP_BULLET;
+	static const FName TAG_DETECTOR;
 };

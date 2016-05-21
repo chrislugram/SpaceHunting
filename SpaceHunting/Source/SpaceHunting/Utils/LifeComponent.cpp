@@ -39,6 +39,10 @@ void ULifeComponent::ApplyDamage(float Damage)
 	{
 		DiedDelegate.Broadcast();
 	}
+	else
+	{
+		LifeChangeDelegate.Broadcast(CurrentLife);
+	}
 }
 #pragma endregion
 

@@ -58,16 +58,16 @@ void ABullet::Shoot(FVector Direction)
 #pragma region EVENTS
 void ABullet::OnOverlapBegin(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Error, TEXT("golpeo a %s"), *(OtherComp->GetName()));
+	//UE_LOG(LogTemp, Error, TEXT("golpeo a %s"), *(OtherComp->GetName()));
 	InMovement = false;
-	if (OtherComp->ComponentHasTag(Constants::TAG_ENEMY))
+	if (OtherActor->ActorHasTag(Constants::TAG_ENEMY))
 	{
-		UE_LOG(LogTemp, Error, TEXT("golpeo a ENEMY"));
+		//UE_LOG(LogTemp, Error, TEXT("golpeo a ENEMY"));
 		OtherActor->FindComponentByClass<ULifeComponent>()->ApplyDamage(-Damage);
 	}
-	else if (OtherComp->ComponentHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
+	else if (OtherActor->ActorHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
 	{
-		UE_LOG(LogTemp, Error, TEXT("golpeo a MOTHERSHIP"));
+		//UE_LOG(LogTemp, Error, TEXT("golpeo a MOTHERSHIP"));
 	}
 	ProjectileSpawn->DisableElement();
 }

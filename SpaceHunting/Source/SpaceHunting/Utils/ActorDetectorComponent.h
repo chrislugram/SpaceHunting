@@ -5,6 +5,7 @@
 #include "Components/ActorComponent.h"
 #include "ActorDetectorComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FActorDetectorDelegate, AActor*, ActorDetected);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SPACEHUNTING_API UActorDetectorComponent : public UActorComponent
@@ -24,6 +25,15 @@ public:
 	// Called to setup the sphere component
 	UFUNCTION(BlueprintCallable, Category = "ActorDetector")
 	void SetSphereComponent(USphereComponent* SphereComponent);
+
+	// Called each detection
+	UFUNCTION(BlueprintCallable, Category = "ActorDetector")
+	void RunDetection();
+
+	// Delegate launched when an actor was detected
+	UPROPERTY(BlueprintAssignable)
+	FActorDetectorDelegate ActorDetected;
+
 protected:
 	/** Max angle of detection*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActorDetector")
@@ -36,6 +46,10 @@ protected:
 	/** Time that pass between two detections*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActorDetector")
 	float TimeBetweenDetections;
+
+	/** Tag to detect in overlapping actors*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ActorDetector")
+	FName TagToDetect;
 
 	/** Timer to control detections*/
 	FTimerHandle DetectorTimer;

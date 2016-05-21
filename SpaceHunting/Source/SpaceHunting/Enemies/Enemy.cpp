@@ -25,6 +25,7 @@ void AEnemy::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Life component NOT FOUND"));
 		return;
 	}
+	LifeComponent->LifeChangeDelegate.AddDynamic(this, &AEnemy::LifeChanged);
 	LifeComponent->DiedDelegate.AddDynamic(this, &AEnemy::Died);
 }
 
@@ -40,6 +41,11 @@ void AEnemy::Tick( float DeltaTime )
 void AEnemy::Died()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Muere!!!"));
+}
+
+void AEnemy::LifeChanged(float Life)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Cambia vida!!! %f"), Life);
 }
 #pragma endregion
 
