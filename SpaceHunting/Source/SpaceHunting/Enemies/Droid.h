@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Enemies/Enemy.h"
+#include "Utils/ActorDetectorComponent.h"
 #include "Droid.generated.h"
 
 /**
@@ -14,14 +15,19 @@ class SPACEHUNTING_API ADroid : public AEnemy
 	GENERATED_BODY()
 	
 public:
+	ADroid();
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
-	
+
 	/** Setting the actor of the mothership */
 	void SetMothershipActor(AActor* Mothership);
+
+	/** Action when droid see other actor*/
+	void OnSeePawn(APawn* OtherPawn);
 
 protected:
 	/** Damage to player when have a collision */
@@ -31,6 +37,7 @@ protected:
 	/** Speed of rotation */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
 	float RotationSpeed;
+	
 
 	/** Offset of rotation*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
@@ -48,4 +55,7 @@ protected:
 
 	/** Actor of the mothership */
 	AActor* MothershipActor;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid")
+	class UActorDetectorComponent* DroidDetector;
 };

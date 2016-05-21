@@ -17,7 +17,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	// Setup life
 	LifeComponent = FindComponentByClass<ULifeComponent>();
 	if (LifeComponent == nullptr)
