@@ -82,4 +82,10 @@ protected:
 
 	/** Timer to control the droid generation time*/
 	FTimerHandle DroidGenerationTimer;
+
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	virtual void LifeChanged(float Life) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	virtual void Died() override;
 };

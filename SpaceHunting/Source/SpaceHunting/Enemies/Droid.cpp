@@ -39,7 +39,7 @@ void ADroid::BeginPlay()
 		}
 
 		// Adding binding actions
-		UE_LOG(LogTemp, Error, TEXT("añado delegados"));
+		//UE_LOG(LogTemp, Error, TEXT("añado delegados"));
 		DroidDetector->ActorDetected.AddDynamic(this, &ADroid::OnActorDetected);
 	}
 

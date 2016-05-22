@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "Enemies/Droid.h"
 #include "Spaceship.h"
-#include "SpawnComponent.h"
 
 #define OUT
 
@@ -15,6 +15,8 @@ ASpaceship::ASpaceship()
 	// Create empty root component
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("SpaceshipBoxComponent"));
 	RootComponent = BoxComponent;
+	//BoxComponent->OnComponentBeginOverlap.AddDynamic(this, &ASpaceship::OnOverlapBegin);
+	BoxComponent->OnComponentHit.AddDynamic(this, &ASpaceship::OnHit);
 
 	// Create spring arm
 	CameraSpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraSpringArm"));
@@ -35,6 +37,9 @@ ASpaceship::ASpaceship()
 	// Create spawn component for the weapon
 	SpawnComponent = CreateDefaultSubobject<USpawnComponent>(TEXT("SpawnComponent"));
 
+	// Create life component
+	LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
+
 	// Posses default Player 0
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
@@ -48,6 +53,18 @@ void ASpaceship::BeginPlay()
 
 	// Setup movement
 	CurrentSpeedForward = 0;
+
+	// Setup life
+	if (LifeComponent != nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Seteo las bind actions"));
+		LifeComponent->LifeChangeDelegate.AddDynamic(this, &ASpaceship::SpaceshipLifeChange);
+		LifeComponent->DiedDelegate.AddDynamic(this, &ASpaceship::SpaceshipDestroyed);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NO TENGO COMPONENTE VIDA"));
+	}
 }
 
 // Called every frame
@@ -108,6 +125,38 @@ void ASpaceship::Shoot(float ShootAxis)
 	if (ShootAxis > 0) 
 	{
 		SpawnComponent->SpawnActor();
+	}
+}
+#pragma endregion
+
+#pragma region SPACESHIP
+void ASpaceship::SpaceshipLifeChange(float Life) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("MUERTE NAVE"));
+}
+
+void ASpaceship::SpaceshipDestroyed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("DAÑADA NAVE"));
+}
+
+void ASpaceship::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("golpeo a %s"), *(OtherComp->GetName()));
+	if (OtherComp->ComponentHasTag(Constants::TAG_ENEMY))
+	{
+		// Enemy is destroyed
+		ULifeComponent* EnemyLifecomponent = OtherActor->FindComponentByClass<ULifeComponent>();
+		EnemyLifecomponent->ApplyDamage(-EnemyLifecomponent->GetInitialLife());
+
+		// Damage spaceship
+		ADroid* Droid = Cast<ADroid>(OtherActor);
+		LifeComponent->ApplyDamage(Droid->Damage);
+	}
+	else if (OtherComp->ComponentHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Choco con mothership"));
+		LifeComponent->ApplyDamage(-LifeComponent->GetInitialLife());
 	}
 }
 #pragma endregion

@@ -27,6 +27,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	void ApplyDamage(float Damage);
 
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	float GetInitialLife();
+
 	/** Reset life */
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	void ResetLife();

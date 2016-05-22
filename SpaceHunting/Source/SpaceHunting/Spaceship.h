@@ -3,6 +3,9 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
+#include "Utils/LifeComponent.h"
+#include "SpawnComponent.h"
+#include "Constant/Constants.h"
 #include "Spaceship.generated.h"
 
 UCLASS()
@@ -34,6 +37,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+	// Called when the life of player change
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	void SpaceshipLifeChange(float Life);
+
+	// Called when player die
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	void SpaceshipDestroyed();
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	float SpeedRotation;
@@ -48,11 +59,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship")
 	class USpawnComponent* SpawnComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship")
+	class ULifeComponent* LifeComponent;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spaceship", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxComponent;
 
 	float CurrentSpeedForward;
 
+	UFUNCTION(BlueprintCallable, Category = "Spaceship")
+	void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 ///	INPUT_METHODS
 	/** Called for rotation in X axis */

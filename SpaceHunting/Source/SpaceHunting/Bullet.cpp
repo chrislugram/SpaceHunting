@@ -60,14 +60,15 @@ void ABullet::OnOverlapBegin(class AActor* OtherActor, class UPrimitiveComponent
 {
 	//UE_LOG(LogTemp, Error, TEXT("golpeo a %s"), *(OtherComp->GetName()));
 	InMovement = false;
-	if (OtherActor->ActorHasTag(Constants::TAG_ENEMY))
+	if (OtherComp->ComponentHasTag(Constants::TAG_ENEMY))
 	{
 		//UE_LOG(LogTemp, Error, TEXT("golpeo a ENEMY"));
 		OtherActor->FindComponentByClass<ULifeComponent>()->ApplyDamage(-Damage);
 	}
-	else if (OtherActor->ActorHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
+	else if (OtherComp->ComponentHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
 	{
 		//UE_LOG(LogTemp, Error, TEXT("golpeo a MOTHERSHIP"));
+		OtherActor->FindComponentByClass<ULifeComponent>()->ApplyDamage(-Damage);
 	}
 	ProjectileSpawn->DisableElement();
 }

@@ -40,12 +40,12 @@ void AEnemy::Tick( float DeltaTime )
 #pragma region ENEMY
 void AEnemy::Died()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Muere!!!"));
+	//UE_LOG(LogTemp, Warning, TEXT("Muere!!!"));
 }
 
 void AEnemy::LifeChanged(float Life)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Cambia vida!!! %f"), Life);
+	//UE_LOG(LogTemp, Warning, TEXT("Cambia vida!!! %f"), Life);
 }
 #pragma endregion
 

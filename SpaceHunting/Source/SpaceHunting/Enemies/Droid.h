@@ -43,14 +43,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Droid")
 	void InitDroid();
 
+	/** Damage to player when have a collision */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
+	float Damage;
+
 protected:
 	/** State of droid*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid State")
 	EDroidState DroidState;
-
-	/** Damage to player when have a collision */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
-	float Damage;
 
 	/** Speed of rotation */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")

@@ -33,6 +33,9 @@ void AMothershipEnemy::BeginPlay()
 
 	// Setup initial rotation
 	CurrentRotation = GetActorRotation();
+
+	// Setup life
+	LifeComponent->ResetLife();
 }
 
 void AMothershipEnemy::Tick(float DeltaSeconds)
@@ -62,6 +65,16 @@ void AMothershipEnemy::Tick(float DeltaSeconds)
 #pragma endregion
 
 #pragma region MOTHERSHIP_ENEMY
+void AMothershipEnemy::Died()
+{
+	UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Muere!!!"));
+}
+
+void AMothershipEnemy::LifeChanged(float Life)
+{
+	UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Cambia vida!!! %f"), Life);
+}
+
 void AMothershipEnemy::DroidDestroyed() 
 {
 	CurrentDroids--;
