@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MothershipEnemy Spawner")
 	void CheckDroidGeneration();
 
+	UFUNCTION(BlueprintCallable, Category = "MothershipEnemy Spawner")
+	void DroidDestroyed();
+
 protected:
 	/** When the mothership have this energy, the game end */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MothershipEnemy")

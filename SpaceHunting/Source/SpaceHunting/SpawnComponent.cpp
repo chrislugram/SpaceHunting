@@ -57,6 +57,7 @@ void USpawnComponent::FinishReloadTime()
 void USpawnComponent::AddDisabledSpawnElement(USpawnElement * SpawnElement)
 {
 	DisabledSpawnElements.Add(SpawnElement);
+	SpawnElementDisabled.Broadcast();
 }
 
 // Called to spawn object in world

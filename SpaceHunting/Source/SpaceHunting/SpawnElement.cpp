@@ -49,6 +49,8 @@ void USpawnElement::DisableElement()
 	//UE_LOG(LogTemp, Warning, TEXT("DISABLE SPAWN ELEMENT"));
 	SpawnerOwner->AddDisabledSpawnElement(this);
 
+	DisabledDelegate.Broadcast();
+
 	GetOwner()->SetActorTickEnabled(false);
 	GetOwner()->SetActorEnableCollision(false);
 	GetOwner()->SetActorHiddenInGame(true);
@@ -60,6 +62,8 @@ void USpawnElement::EnableElement()
 	GetOwner()->SetActorTickEnabled(true);
 	GetOwner()->SetActorEnableCollision(true);
 	GetOwner()->SetActorHiddenInGame(false);
+
+	EnabledDelegate.Broadcast();
 }
 #pragma endregion
 

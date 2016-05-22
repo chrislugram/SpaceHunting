@@ -12,6 +12,9 @@ void ADroid::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Setup state
+	DroidState = EDroidState::DS_NONE;
+
 	// Setup rotation movement
 	RunningTime = 0;
 
@@ -40,8 +43,16 @@ void ADroid::BeginPlay()
 		DroidDetector->ActorDetected.AddDynamic(this, &ADroid::OnActorDetected);
 	}
 
-	// TEST
-	InitDroid();
+	// Setup spawn element
+	SpawnElement = FindComponentByClass<USpawnElement>();
+	if (SpawnElement == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("SpawnElement not found"));
+	}
+	else
+	{
+		SpawnElement->EnabledDelegate.AddDynamic(this, &ADroid::InitDroid);
+	}
 }
 
 void ADroid::Tick(float DeltaSeconds)
@@ -67,6 +78,9 @@ void ADroid::Tick(float DeltaSeconds)
 #pragma region DROID
 void ADroid::InitDroid()
 {
+	// Restore life
+	LifeComponent->ResetLife();
+
 	// Clean actor to hunt
 	ActorToHunt = nullptr;
 
@@ -133,6 +147,11 @@ void ADroid::OnActorDetected(AActor* ActorDetected)
 {
 	ActorToHunt = ActorDetected;
 	DroidState = EDroidState::DS_HUNTING;
+}
+
+void ADroid::Died() 
+{	
+	SpawnElement->DisableElement();
 }
 #pragma endregion
 

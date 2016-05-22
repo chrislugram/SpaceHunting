@@ -6,6 +6,7 @@
 #include "SpawnElement.h"
 #include "SpawnComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnElementDisabled);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SPACEHUNTING_API USpawnComponent : public UActorComponent
@@ -34,6 +35,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
 	FRotator GetSpawnRotator();
 
+	UPROPERTY(BlueprintAssignable)
+	FSpawnElementDisabled SpawnElementDisabled;
 
 	/** Activate the spawn*/
 	void FinishReloadTime();

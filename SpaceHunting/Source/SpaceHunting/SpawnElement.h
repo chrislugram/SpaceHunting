@@ -6,6 +6,8 @@
 #include "SpawnComponent.h"
 #include "SpawnElement.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnEnabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnDisabled);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SPACEHUNTING_API USpawnElement : public UActorComponent
@@ -34,6 +36,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "SpawnComponent")
 	virtual void EnableElement();
 
+	/** Delegate, executes when spawn element is enabled*/
+	UPROPERTY(BlueprintAssignable)
+	FSpawnEnabled EnabledDelegate;
+
+	/** Delegate, executes when spawn element is disabled*/
+	UPROPERTY(BlueprintAssignable)
+	FSpawnDisabled DisabledDelegate;
 protected:
 	/** Time to disable the spawn element */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SpawnElement", meta = (AllowPrivateAccess = "true"))

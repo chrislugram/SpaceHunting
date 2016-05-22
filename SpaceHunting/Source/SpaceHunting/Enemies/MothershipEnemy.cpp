@@ -4,9 +4,11 @@
 #include "Droid.h"
 #include "MothershipEnemy.h"
 
-#pragma region ENGINE
+#pragma region CONSTRUCTOR
 AMothershipEnemy::AMothershipEnemy() : AEnemy() {}
+#pragma endregion
 
+#pragma region ENGINE
 void AMothershipEnemy::BeginPlay()
 {
 	Super::BeginPlay();
@@ -14,7 +16,14 @@ void AMothershipEnemy::BeginPlay()
 	// Access to all SpawnComponents
 	SpawnComponent = FindComponentByClass<USpawnComponent>();
 	if (SpawnComponent == nullptr)
+	{
 		UE_LOG(LogTemp, Error, TEXT("MothershipEnemy: SpawnComponent not found"));
+	}
+	else 
+	{
+		SpawnComponent->SpawnElementDisabled.AddDynamic(this, &AMothershipEnemy::DroidDestroyed);
+	}
+		
 
 	// Setup the rotation timer
 	GetWorldTimerManager().SetTimer(RotationTimer, this, &AMothershipEnemy::UpdateRotation, TimeToChangeRotation, true);
@@ -53,6 +62,16 @@ void AMothershipEnemy::Tick(float DeltaSeconds)
 #pragma endregion
 
 #pragma region MOTHERSHIP_ENEMY
+void AMothershipEnemy::DroidDestroyed() 
+{
+	CurrentDroids--;
+	if (CurrentDroids < 0) 
+	{
+		CurrentDroids = 0;
+		UE_LOG(LogTemp, Error, TEXT("Droid destroyed delegate ERROR"));
+	}
+}
+
 void AMothershipEnemy::UpdateRotation()
 {
 	CurrentRotation.Roll = 0;

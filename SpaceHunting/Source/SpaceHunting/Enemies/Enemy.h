@@ -26,8 +26,8 @@ protected:
 	ULifeComponent* LifeComponent;
 	
 	UFUNCTION(BlueprintCallable, Category = "Life")
-	void LifeChanged(float Life);
+	virtual void LifeChanged(float Life);
 
 	UFUNCTION(BlueprintCallable, Category = "Life")
-	void Died();
+	virtual void Died();
 };

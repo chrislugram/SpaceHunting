@@ -19,8 +19,6 @@ ULifeComponent::ULifeComponent()
 void ULifeComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	CurrentLife = 1;
 }
 
 // Called every frame
@@ -31,6 +29,11 @@ void ULifeComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 #pragma endregion
 
 #pragma region LIFE
+void ULifeComponent::ResetLife()
+{
+	CurrentLife = 1;
+}
+
 void ULifeComponent::ApplyDamage(float Damage) 
 {
 	CurrentLife += (Damage / InitLife);

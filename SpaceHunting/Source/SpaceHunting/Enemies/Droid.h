@@ -4,6 +4,7 @@
 
 #include "Enemies/Enemy.h"
 #include "Utils/ActorDetectorComponent.h"
+#include "SpawnElement.h"
 #include "Droid.generated.h"
 
 UENUM(BlueprintType)
@@ -44,7 +45,7 @@ public:
 
 protected:
 	/** State of droid*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid State")
 	EDroidState DroidState;
 
 	/** Damage to player when have a collision */
@@ -79,12 +80,18 @@ protected:
 	/** Actor to hunting*/
 	AActor* ActorToHunt;
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DroidComponents")
 	class UActorDetectorComponent* DroidDetector;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DroidComponents")
+	class USpawnElement* SpawnElement;
 
 	/** The movement of the droid when it is in guard state*/
 	void GuardMovement(float DeltaSeconds);
 
 	/** The movement of the droid when it is in hunting state*/
 	void HuntingMovement(float DeltaSeconds);
+
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	void Died() override;
 };

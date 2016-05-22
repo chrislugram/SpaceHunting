@@ -27,6 +27,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	void ApplyDamage(float Damage);
 
+	/** Reset life */
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	void ResetLife();
+
 	/** Delegate, executed when CurrentLife changes*/
 	UPROPERTY(BlueprintAssignable)
 	FLifeChangeDelegate LifeChangeDelegate;
