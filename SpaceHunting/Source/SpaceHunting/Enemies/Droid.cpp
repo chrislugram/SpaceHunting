@@ -39,21 +39,57 @@ void ADroid::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("añado delegados"));
 		DroidDetector->ActorDetected.AddDynamic(this, &ADroid::OnActorDetected);
 	}
+
+	// TEST
+	InitDroid();
 }
 
 void ADroid::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	// Select the movement of droid
+	if (DroidState == EDroidState::DS_GUARD)
+	{
+		GuardMovement(DeltaSeconds);
+	}
+	else if (DroidState == EDroidState::DS_HUNTING)
+	{
+		HuntingMovement(DeltaSeconds);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Error state in droid %s"), *(GetName()));
+	}
+}
+#pragma endregion
+
+#pragma region DROID
+void ADroid::InitDroid()
+{
+	// Clean actor to hunt
+	ActorToHunt = nullptr;
+
+	// Setup the initial state
+	DroidState = EDroidState::DS_GUARD;
+
+	// Clean running time
+	RunningTime = FMath::RandRange(0.0f, 360.00f);
+	//UE_LOG(LogTemp, Warning, TEXT("Random for droid %s: %f"), *(GetName()), RunningTime);
+}
+
+void ADroid::GuardMovement(float DeltaSeconds)
+{
 	if (MothershipActor != nullptr)
 	{
-		//Rotation
+		// Adding offset rotation
 		RunningTime += DeltaSeconds;
 
 		FRotator OffsetRotator = FRotator::ZeroRotator;
 		OffsetRotator.Pitch = FMath::Sin(RunningTime) * OffsetAngleRotation;
-		OffsetRotator.Yaw = FMath::Sin(RunningTime) * OffsetAngleRotation;
+		OffsetRotator.Yaw = FMath::Cos(RunningTime) * OffsetAngleRotation;
 
+		//Rotation
 		FRotator ActorRotator = GetActorRotation();
 		ActorRotator = FMath::RInterpTo(ActorRotator, (MothershipActor->GetActorRotation() + OffsetRotator), DeltaSeconds, RotationSpeed*DeltaSeconds);
 		SetActorRotation(ActorRotator);
@@ -61,19 +97,33 @@ void ADroid::Tick(float DeltaSeconds)
 		// Movement
 		FVector ActorForward = GetActorForwardVector();
 		SetActorLocation(GetActorLocation() + (ActorForward * ForwardSpeed * DeltaSeconds));
-		DrawDebugLine(
-			GetWorld(),
-			GetActorLocation(),
-			GetActorLocation() + (ActorForward * ForwardSpeed),
-			FColor(0, 0, 255),
-			false, 10, 0,
-			12.333
-			);
+		//DrawDebugLine( GetWorld(), GetActorLocation(), GetActorLocation() + (ActorForward * ForwardSpeed), FColor(0, 0, 255), false, 10, 0, 12.333);
 	}
 }
-#pragma endregion
 
-#pragma region DROID
+void ADroid::HuntingMovement(float DeltaSeconds)
+{
+	if (ActorToHunt != nullptr)
+	{
+		// Adding offset rotation
+		RunningTime += (DeltaSeconds * MultiplyHuntingSpeed);
+
+		FRotator OffsetRotator = FRotator::ZeroRotator;
+		OffsetRotator.Pitch = FMath::Sin(RunningTime) * (OffsetAngleRotation * MultiplyHuntingSpeed);
+		OffsetRotator.Yaw = FMath::Cos(RunningTime) * (OffsetAngleRotation * MultiplyHuntingSpeed);
+
+		// Rotation
+		FRotator ActorRotator = GetActorRotation();
+		FRotator NewRotator = FRotationMatrix::MakeFromX(ActorToHunt->GetActorLocation() - GetActorLocation()).Rotator();
+		ActorRotator = FMath::RInterpTo(ActorRotator, NewRotator + OffsetRotator, DeltaSeconds, RotationSpeed * DeltaSeconds * MultiplyHuntingSpeed);
+		SetActorRotation(ActorRotator);
+
+		// Movement
+		FVector ActorForward = GetActorForwardVector();
+		SetActorLocation(GetActorLocation() + (ActorForward * ForwardSpeed * DeltaSeconds * MultiplyHuntingSpeed));
+	}
+}
+
 void ADroid::SetMothershipActor(AActor* Mothership)
 {
 	MothershipActor = Mothership;
@@ -81,7 +131,8 @@ void ADroid::SetMothershipActor(AActor* Mothership)
 
 void ADroid::OnActorDetected(AActor* ActorDetected)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Detected %s"), *(ActorDetected->GetName()));
+	ActorToHunt = ActorDetected;
+	DroidState = EDroidState::DS_HUNTING;
 }
 #pragma endregion
 

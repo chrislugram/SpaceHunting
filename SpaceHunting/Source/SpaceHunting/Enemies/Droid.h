@@ -6,6 +6,14 @@
 #include "Utils/ActorDetectorComponent.h"
 #include "Droid.generated.h"
 
+UENUM(BlueprintType)
+enum class EDroidState : uint8
+{
+	DS_NONE			UMETA(DisplayName = "None"),
+	DS_GUARD		UMETA(DisplayName = "Guard"),
+	DS_HUNTING		UMETA(DisplayName = "Hunting")
+};
+
 /**
  * 
  */
@@ -30,7 +38,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Droid")
 	void OnActorDetected(AActor* ActorDetected);
 
+	/** Initialized the droid*/
+	UFUNCTION(BlueprintCallable, Category = "Droid")
+	void InitDroid();
+
 protected:
+	/** State of droid*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Enum)
+	EDroidState DroidState;
+
 	/** Damage to player when have a collision */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
 	float Damage;
@@ -38,7 +54,6 @@ protected:
 	/** Speed of rotation */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
 	float RotationSpeed;
-	
 
 	/** Offset of rotation*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
@@ -50,13 +65,26 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
 	float ForwardSpeed;
 
+	/** Speed of forward movement */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Droid")
+	float MultiplyHuntingSpeed;
+
 	/** Current rotation of the droid */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid")
 	FRotator CurrentRotation;
 
 	/** Actor of the mothership */
 	AActor* MothershipActor;
+
+	/** Actor to hunting*/
+	AActor* ActorToHunt;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Droid")
 	class UActorDetectorComponent* DroidDetector;
+
+	/** The movement of the droid when it is in guard state*/
+	void GuardMovement(float DeltaSeconds);
+
+	/** The movement of the droid when it is in hunting state*/
+	void HuntingMovement(float DeltaSeconds);
 };
