@@ -53,36 +53,38 @@ void AMothershipEnemy::Tick(float DeltaSeconds)
 	// Movement
 	FVector ActorForward = GetActorForwardVector();
 	SetActorLocation(GetActorLocation() + (ActorForward * ForwardSpeed * DeltaSeconds));
-	DrawDebugLine(
-		GetWorld(),
-		GetActorLocation(),
-		GetActorLocation() + (ActorForward * ForwardSpeed),
-		FColor(255, 0, 0),
-		false, 10, 0,
-		12.333
-		);
+	//DrawDebugLine( GetWorld(), GetActorLocation(), GetActorLocation() + (ActorForward * ForwardSpeed), FColor(255, 0, 0), false, 10, 0, 12.333 );
 }
 #pragma endregion
 
 #pragma region MOTHERSHIP_ENEMY
 void AMothershipEnemy::Died()
 {
-	UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Muere!!!"));
+	//UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Muere!!!"));
 }
 
 void AMothershipEnemy::LifeChanged(float Life)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Cambia vida!!! %f"), Life);
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetControlledPawn();
+
+	if (PlayerPawn != nullptr)
+	{
+		for (size_t i = 0; i < DroidsReady.Num(); i++)
+		{
+			DroidsReady[i]->OnActorDetected(PlayerPawn);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PawnPlayer not found"));
+	}
 }
 
-void AMothershipEnemy::DroidDestroyed() 
+void AMothershipEnemy::DroidDestroyed(AActor* ActorDisabled)
 {
-	CurrentDroids--;
-	if (CurrentDroids < 0) 
-	{
-		CurrentDroids = 0;
-		UE_LOG(LogTemp, Error, TEXT("Droid destroyed delegate ERROR"));
-	}
+	//UE_LOG(LogTemp, Warning, TEXT("Enemy destroyed!!! %s"), *(ActorDisabled->GetName()));
+	ADroid* DroidDisabled = Cast<ADroid>(ActorDisabled);
+	DroidsReady.Remove(DroidDisabled);
 }
 
 void AMothershipEnemy::UpdateRotation()
@@ -95,16 +97,15 @@ void AMothershipEnemy::UpdateRotation()
 
 void AMothershipEnemy::CheckDroidGeneration()
 {
-	if (CurrentDroids < MaxDroids) 
+	if (DroidsReady.Num() < MaxDroids)
 	{
 		// Generate new droid
-		//UE_LOG(LogTemp, Warning, TEXT("GENERO DROIDE"));
 		AActor* ActorSpawned = SpawnComponent->SpawnActor();
 		ADroid* DroidSpawned = Cast<ADroid>(ActorSpawned);
 		DroidSpawned->SetMothershipActor(this);
 
-		// Increase current droids
-		CurrentDroids++;
+		// Adding droid to list
+		DroidsReady.Add(DroidSpawned);
 	}
 }
 #pragma endregion

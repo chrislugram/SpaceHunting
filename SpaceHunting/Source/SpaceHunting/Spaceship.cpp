@@ -39,6 +39,7 @@ ASpaceship::ASpaceship()
 
 	// Create life component
 	LifeComponent = CreateDefaultSubobject<ULifeComponent>(TEXT("LifeComponent"));
+	LifeComponent->ResetLife();
 
 	// Posses default Player 0
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
@@ -151,7 +152,7 @@ void ASpaceship::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVect
 
 		// Damage spaceship
 		ADroid* Droid = Cast<ADroid>(OtherActor);
-		LifeComponent->ApplyDamage(Droid->Damage);
+		LifeComponent->ApplyDamage(-Droid->Damage);
 	}
 	else if (OtherComp->ComponentHasTag(Constants::TAG_MOTHERSHIP_ENEMY))
 	{

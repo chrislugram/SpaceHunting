@@ -30,6 +30,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	float GetInitialLife();
 
+	UFUNCTION(BlueprintCallable, Category = "Life")
+	float GetCurrentLife();
+
 	/** Reset life */
 	UFUNCTION(BlueprintCallable, Category = "Life")
 	void ResetLife();

@@ -6,7 +6,7 @@
 #include "SpawnElement.h"
 #include "SpawnComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnElementDisabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpawnElementDisabled, AActor*, ActorDisabled);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SPACEHUNTING_API USpawnComponent : public UActorComponent

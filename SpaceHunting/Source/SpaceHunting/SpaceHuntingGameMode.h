@@ -3,6 +3,8 @@
 #pragma once
 
 #include "GameFramework/GameMode.h"
+#include "Enemies/MothershipEnemy.h"
+#include "Spaceship.h"
 #include "SpaceHuntingGameMode.generated.h"
 
 /**
@@ -13,7 +15,14 @@ class SPACEHUNTING_API ASpaceHuntingGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	class ASpaceship* Spaceship;
+
+	class AMothershipEnemy* Mothership;
 };

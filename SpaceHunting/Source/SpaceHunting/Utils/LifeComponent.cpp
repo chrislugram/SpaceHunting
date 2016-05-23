@@ -29,6 +29,11 @@ void ULifeComponent::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 #pragma endregion
 
 #pragma region LIFE
+float ULifeComponent::GetCurrentLife()
+{
+	return CurrentLife;
+}
+
 float ULifeComponent::GetInitialLife()
 {
 	return InitLife;
