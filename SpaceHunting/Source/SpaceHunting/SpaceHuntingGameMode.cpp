@@ -22,6 +22,15 @@ void ASpaceHuntingGameMode::BeginPlay()
 		//UE_LOG(LogTemp, Warning, TEXT("GAME_MODE: name: %s"), *(Mothership->GetName()));
 	}
 	
+	if (HUDWidgetClass != nullptr)
+	{
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
+
+		if (CurrentWidget != nullptr)
+		{
+			CurrentWidget->AddToViewport();
+		}
+	}
 }
 
 void ASpaceHuntingGameMode::Tick(float DeltaSeconds)
@@ -29,15 +38,27 @@ void ASpaceHuntingGameMode::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	// Check if spaceship dead
-	if (Spaceship->FindComponentByClass<ULifeComponent>()->GetCurrentLife() <= 0)
+	if ((UI_GetSpaceshipLife() <= 0) || (Mothership->GetEnergyGeneratedNormalized() >= 1))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
 	}
 	// Check if mothership dead
-	else if (Mothership->FindComponentByClass<ULifeComponent>()->GetCurrentLife() <= 0)
+	else if (UI_GetMothershipLife() <= 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("WIN GAME"));
 	}
+}
+#pragma endregion
+
+#pragma region SPACE_HUNTING_GAME_MODE
+float ASpaceHuntingGameMode::UI_GetMothershipLife()
+{
+	return Mothership->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
+}
+
+float ASpaceHuntingGameMode::UI_GetSpaceshipLife()
+{
+	return Spaceship->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
 }
 #pragma endregion
 

@@ -58,6 +58,11 @@ void AMothershipEnemy::Tick(float DeltaSeconds)
 #pragma endregion
 
 #pragma region MOTHERSHIP_ENEMY
+float AMothershipEnemy::GetEnergyGeneratedNormalized()
+{
+	return (CurrentEnergy / EnergyToEnd);
+}
+
 void AMothershipEnemy::Died()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("MOTHERSHIP Muere!!!"));
