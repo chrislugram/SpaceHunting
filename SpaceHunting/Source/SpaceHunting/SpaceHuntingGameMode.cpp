@@ -21,16 +21,6 @@ void ASpaceHuntingGameMode::BeginPlay()
 		Mothership = *ActorItr;
 		//UE_LOG(LogTemp, Warning, TEXT("GAME_MODE: name: %s"), *(Mothership->GetName()));
 	}
-	
-	if (HUDWidgetClass != nullptr)
-	{
-		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), HUDWidgetClass);
-
-		if (CurrentWidget != nullptr)
-		{
-			CurrentWidget->AddToViewport();
-		}
-	}
 }
 
 void ASpaceHuntingGameMode::Tick(float DeltaSeconds)

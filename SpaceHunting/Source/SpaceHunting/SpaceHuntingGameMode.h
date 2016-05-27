@@ -32,10 +32,4 @@ protected:
 	class ASpaceship* Spaceship;
 
 	class AMothershipEnemy* Mothership;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-	TSubclassOf<class UUserWidget> HUDWidgetClass;
-
-	UPROPERTY()
-	class UUserWidget* CurrentWidget;
 };
