@@ -3,13 +3,11 @@
 #include "SpaceHunting.h"
 #include "SpaceHuntingGameMode.h"
 
-#pragma region ENGINE
-void ASpaceHuntingGameMode::BeginPlay()
+#pragma region SPACE_HUNTING_GAME_MODE
+void ASpaceHuntingGameMode::InitializeGame()
 {
-	Super::BeginPlay();
-
 	// Setup spaceship
-	/*APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetControlledPawn();
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	Spaceship = Cast<ASpaceship>(PlayerPawn);
 
 	if (Spaceship == nullptr)
@@ -19,36 +17,28 @@ void ASpaceHuntingGameMode::BeginPlay()
 	for (TActorIterator<AMothershipEnemy> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 	{
 		Mothership = *ActorItr;
-		//UE_LOG(LogTemp, Warning, TEXT("GAME_MODE: name: %s"), *(Mothership->GetName()));
-	}*/
-}
-
-void ASpaceHuntingGameMode::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-
-	// Check if spaceship dead
-	/*if ((UI_GetSpaceshipLife() <= 0) || (Mothership->GetEnergyGeneratedNormalized() >= 1))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("GAME OVER"));
+		UE_LOG(LogTemp, Warning, TEXT("GAME_MODE: name: %s"), *(Mothership->GetName()));
 	}
-	// Check if mothership dead
-	else if (UI_GetMothershipLife() <= 0)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("WIN GAME"));
-	}*/
 }
-#pragma endregion
 
-#pragma region SPACE_HUNTING_GAME_MODE
+bool ASpaceHuntingGameMode::IsGameOver()
+{
+	return (((UI_GetSpaceshipLife() <= 0) || (Mothership->GetEnergyGeneratedNormalized() >= 1)));
+}
+
+bool ASpaceHuntingGameMode::IsWinGame()
+{
+	return (UI_GetMothershipLife() <= 0);
+}
+
 float ASpaceHuntingGameMode::UI_GetMothershipLife()
 {
-	return 0;//Mothership->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
+	return Mothership->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
 }
 
 float ASpaceHuntingGameMode::UI_GetSpaceshipLife()
 {
-	return 0;// Spaceship->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
+	return Spaceship->FindComponentByClass<ULifeComponent>()->GetCurrentLife();
 }
 #pragma endregion
 

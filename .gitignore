@@ -57,3 +57,4 @@ SpaceHunting/Intermediate/*
 # Cache files for the editor to use
 SpaceHunting/DerivedDataCache/*
 SpaceHunting/Content/StarterContent/*
+*.VC.db

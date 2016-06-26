@@ -18,15 +18,22 @@ class SPACEHUNTING_API ASpaceHuntingGameMode : public AGameMode
 	
 public:
 
-	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable, Category = "Logic")
+	virtual void InitializeGame();
 
-	virtual void Tick(float DeltaTime) override;
-
+	UFUNCTION(BlueprintCallable, Category = "Logic")
+	bool IsGameOver();
+	
+	UFUNCTION(BlueprintCallable, Category = "Logic")
+	bool IsWinGame();
+	
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	float UI_GetMothershipLife();
 
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	float UI_GetSpaceshipLife();
+
+	
 
 protected:
 	class ASpaceship* Spaceship;
