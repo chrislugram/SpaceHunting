@@ -2,6 +2,8 @@
 
 #include "SpaceHunting.h"
 #include "Enemies/Droid.h"
+#include "Utils/LifeComponent.h"
+#include "SpawnComponent.h"
 #include "Spaceship.h"
 
 #define OUT
@@ -141,7 +143,7 @@ void ASpaceship::SpaceshipDestroyed()
 	UE_LOG(LogTemp, Warning, TEXT("DAÑADA NAVE"));
 }
 
-void ASpaceship::OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void ASpaceship::OnHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("golpeo a %s"), *(OtherComp->GetName()));
 	if (OtherComp->ComponentHasTag(Constants::TAG_ENEMY))

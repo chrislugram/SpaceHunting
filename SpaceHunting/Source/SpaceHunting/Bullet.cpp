@@ -3,6 +3,7 @@
 #include "SpaceHunting.h"
 #include "Constant/Constants.h"
 #include "Utils/LifeComponent.h"
+#include "ProjectileSpawn.h"
 #include "Bullet.h"
 
 #pragma region CONSTRUCTORS
@@ -56,7 +57,7 @@ void ABullet::Shoot(FVector Direction)
 #pragma endregion
 
 #pragma region EVENTS
-void ABullet::OnOverlapBegin(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void ABullet::OnOverlapBegin(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	//UE_LOG(LogTemp, Error, TEXT("golpeo a %s"), *(OtherComp->GetName()));
 	InMovement = false;

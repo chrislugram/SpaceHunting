@@ -3,8 +3,6 @@
 #pragma once
 
 #include "Enemies/Enemy.h"
-#include "Utils/ActorDetectorComponent.h"
-#include "SpawnElement.h"
 #include "Droid.generated.h"
 
 UENUM(BlueprintType)
@@ -14,6 +12,9 @@ enum class EDroidState : uint8
 	DS_GUARD		UMETA(DisplayName = "Guard"),
 	DS_HUNTING		UMETA(DisplayName = "Hunting")
 };
+
+class UActorDetectorComponent;
+class USpawnElement;
 
 /**
  * 

@@ -3,8 +3,9 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "ProjectileSpawn.h"
 #include "Bullet.generated.h"
+
+class UProjectileSpawn;
 
 UCLASS()
 class SPACEHUNTING_API ABullet : public AActor
@@ -46,5 +47,5 @@ protected:
 	FVector CurrentDirection;
 
 	UFUNCTION(BlueprintCallable, Category = "Bullet")
-	void OnOverlapBegin(class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	void OnOverlapBegin(class UPrimitiveComponent* HitComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

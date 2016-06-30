@@ -3,8 +3,9 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "SpawnComponent.h"
 #include "SpawnElement.generated.h"
+
+class USpawnComponent;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnEnabled);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FSpawnDisabled);

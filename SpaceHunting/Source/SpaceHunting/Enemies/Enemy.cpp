@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "Utils/LifeComponent.h"
 #include "Enemy.h"
 
 #pragma region CONSTRUCTOR

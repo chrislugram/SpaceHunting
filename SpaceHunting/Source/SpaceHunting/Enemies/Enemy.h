@@ -3,8 +3,9 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "Utils/LifeComponent.h"
 #include "Enemy.generated.h"
+
+class ULifeComponent;
 
 UCLASS()
 class SPACEHUNTING_API AEnemy : public AActor

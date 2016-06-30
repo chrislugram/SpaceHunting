@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "SpawnElement.h"
 #include "SpawnComponent.h"
 
 #pragma region CONSTRUCTOR
@@ -35,7 +36,7 @@ void USpawnComponent::BeginPlay()
 	ReloadSpawn = true;
 	GetOwner()->GetWorldTimerManager().SetTimer(SpawnTimer, this, &USpawnComponent::FinishReloadTime, ReloadTime, true);
 	GetOwner()->GetWorldTimerManager().PauseTimer(SpawnTimer);
-	DisabledSpawnElements.Init(0);
+	DisabledSpawnElements.Init(nullptr, 0);
 }
 
 // Called every frame

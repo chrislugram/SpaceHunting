@@ -3,10 +3,11 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
-#include "Utils/LifeComponent.h"
-#include "SpawnComponent.h"
 #include "Constant/Constants.h"
 #include "Spaceship.generated.h"
+
+class ULifeComponent;
+class USpawnComponent;
 
 UCLASS()
 class SPACEHUNTING_API ASpaceship : public APawn
@@ -68,7 +69,7 @@ protected:
 	float CurrentSpeedForward;
 
 	UFUNCTION(BlueprintCallable, Category = "Spaceship")
-	void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+	void OnHit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 ///	INPUT_METHODS
 	/** Called for rotation in X axis */

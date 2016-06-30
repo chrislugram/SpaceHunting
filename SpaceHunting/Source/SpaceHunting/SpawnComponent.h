@@ -3,8 +3,9 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
-#include "SpawnElement.h"
 #include "SpawnComponent.generated.h"
+
+class USpawnElement;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSpawnElementDisabled, AActor*, ActorDisabled);
 

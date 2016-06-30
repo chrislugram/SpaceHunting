@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "Enemies/MothershipEnemy.h"
+#include "Utils/LifeComponent.h"
+#include "Spaceship.h"
 #include "SpaceHuntingGameMode.h"
 
 #pragma region SPACE_HUNTING_GAME_MODE

@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
+#include "Utils/ActorDetectorComponent.h"
+#include "Utils/LifeComponent.h"
+#include "SpawnElement.h"
 #include "Droid.h"
 
 #pragma region CONSTRUCTORS
@@ -27,16 +30,24 @@ void ADroid::BeginPlay()
 	else
 	{
 		// Setup the sphere of detection
-		TArray<UActorComponent*> Components = GetComponents();
-		bool FoundSphereDetector = false;
-		for (size_t i = 0; i < Components.Num() && !FoundSphereDetector; i++)
+		TSet<UActorComponent*> Components = GetComponents();
+		for (auto Component : Components) 
+		{
+			if (Component->GetName().Equals("SphereDetector")) 
+			{
+				DroidDetector->SetSphereComponent(Cast<USphereComponent>(Component));
+				break;
+			}
+		}
+
+		/*for (size_t i = 0; i < Components.Num() && !FoundSphereDetector; i++)
 		{
 			if (Components[i]->GetName().Equals("SphereDetector"))
 			{
 				FoundSphereDetector = true;
 				DroidDetector->SetSphereComponent(Cast<USphereComponent>(Components[i]));
 			}
-		}
+		}*/
 
 		// Adding binding actions
 		//UE_LOG(LogTemp, Error, TEXT("añado delegados"));

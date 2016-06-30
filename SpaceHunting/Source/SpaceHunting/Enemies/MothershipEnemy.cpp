@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "SpaceHunting.h"
-#include "Droid.h"
+#include "Enemies/Droid.h"
+#include "Utils/LifeComponent.h"
+#include "SpawnComponent.h"
 #include "MothershipEnemy.h"
 
 #pragma region CONSTRUCTOR
@@ -70,7 +72,7 @@ void AMothershipEnemy::Died()
 
 void AMothershipEnemy::LifeChanged(float Life)
 {
-	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetControlledPawn();
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 	if (PlayerPawn != nullptr)
 	{

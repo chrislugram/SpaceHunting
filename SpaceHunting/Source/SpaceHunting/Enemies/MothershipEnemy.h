@@ -3,9 +3,10 @@
 #pragma once
 
 #include "Enemies/Enemy.h"
-#include "Enemies/Droid.h"
-#include "SpawnComponent.h"
 #include "MothershipEnemy.generated.h"
+
+class USpawnComponent;
+class ADroid;
 
 /**
  * 

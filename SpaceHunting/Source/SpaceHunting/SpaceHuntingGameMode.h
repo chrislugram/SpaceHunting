@@ -3,10 +3,11 @@
 #pragma once
 
 #include "GameFramework/GameMode.h"
-#include "Enemies/MothershipEnemy.h"
-#include "Spaceship.h"
 #include "Blueprint/UserWidget.h"
 #include "SpaceHuntingGameMode.generated.h"
+
+class ASpaceship;
+class AMothershipEnemy;
 
 /**
  * 
